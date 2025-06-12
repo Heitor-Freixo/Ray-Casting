@@ -11,14 +11,27 @@ void cadastro(){
     if(arquivo== NULL){
         printf("Não foi possível abrir este arquivo.");
     }
+    printf("______CADASTRO______");
     printf("Nome:");
     fgets(nome, sizeof(nome), stdin);
     nome[strcspn(nome, "\n")] =0;
     printf("Senha:");
     fgets(senha, sizeof(senha), stdin);
     senha[strcspn(senha, "\n")] =0;
+    //separa por ;
+    fprintf(arquivo, "%s;%s\n", nome, senha);
+    fclose(arquivo);
+    printf("Usuário cadastrado com sucesso.");
 }
 void entrar(){
+    FILE *arquivo;
+    char nome[100], senha[50];
+    arquivo=fopen("dadoslogin.txt", "r");
+    printf("______LOGIN______");
+    printf("Nome:");
+    fgets(nome, sizeof(nome), stdin);
+    printf("Senha:");
+    fgets(senha, sizeof(senha), stdin);
 
 }
 int login(){
@@ -38,7 +51,9 @@ int login(){
             break;
         case 3:
             printf("Saindo...");
-            break;;
+            break;
+        default:
+            printf("Opção inválida, tente novamente");
         }
     }while(opcao!=3);
     return 0;
