@@ -1,9 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-struct usuarios{
-    char nome[60];
-    char senha[60];
-};
+
 void cadastro(){
     FILE *arquivo;
     char nome[100], senha[50];
@@ -28,13 +25,22 @@ void cadastro(){
 void entrar(){
     FILE *arquivo;
     char *nomefix, *senhafix, nome[100], senha[50], linha[200];
+    int flag=0;
+
     arquivo=fopen("dadoslogin.txt", "r");
+    if(arquivo == NULL){
+        printf("Arquivo não encontrado.\n");
+        return;
+    }
+
     printf("______LOGIN______\n");
     printf("Nome:\n");
     fgets(nome, sizeof(nome), stdin);
+    nome[strcspn(nome, "\n")] =0;
     printf("Senha:\n");
     fgets(senha, sizeof(senha), stdin);
-    while (fgets(linha, sizeof(linha), arquivo) != NULL) {
+    senha[strcspn(senha, "\n")] =0;
+    while (fgets(linha, sizeof(linha), arquivo) != NULL && flag == 0) {
         // Remove a quebra de linha
         linha[strcspn(linha, "\n")] = 0;
 
@@ -43,29 +49,27 @@ void entrar(){
         senhafix = strtok(NULL, ";"); // continua de onde parou o ponteiro
 
         if (nomefix != NULL && senhafix != NULL) {
-            printf("%s\n", nomefix);
-            printf("%s\n",senhafix);
-            //int idade = atoi(ponidade);
-            if(strcmp(nome,nomefix)==0){
-                printf("Nome correto!!");
-            }else{
-                printf("Seu nome está errado");
-            }
-            if(strcmp(senha,senhafix)==0){
-                printf("Senha correta!!");
-            }else{
-                printf("Sua senha está errada.");
+            if(strcmp(nome, nomefix) == 0){
+                printf("Nome correto!!\n");
+                if(strcmp(senha, senhafix) == 0){
+                    printf("Senha correta!!\n");
+                    flag = 1;
+                } else {
+                    printf("Senha incorreta!\n");
+                }
             }
         }
-            
-        
-    };
-
-
-
-
-
+    }
+    
+    fclose(arquivo);
+    
+    if(flag == 0) {
+        printf("Usuário não encontrado ou credenciais incorretas.\n");
+    } else {
+        printf("Login bem-sucedido!\n");
+    }
 }
+
 int main(){
     int opcao;
     do{
