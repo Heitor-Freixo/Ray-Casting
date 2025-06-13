@@ -1,5 +1,9 @@
 #include <stdio.h>
 #include <string.h>
+struct usuario{
+    char nome[50], senha[100];
+};
+
 
 void cadastro(){
     FILE *arquivo;
