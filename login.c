@@ -7,28 +7,29 @@ struct usuario{
 
 void cadastro(){
     FILE *arquivo;
-    char nome[100], senha[50];
+    struct usuario u1;
     arquivo=fopen("dadoslogin.txt", "a");
     if(arquivo== NULL){
         printf("Não foi possível abrir este arquivo.");
     }
     printf("______CADASTRO______\n");
     printf("Nome:\n");
-    fgets(nome, sizeof(nome), stdin);
-    nome[strcspn(nome, "\n")] =0;
+    fgets(u1.nome, sizeof(u1.nome), stdin);
+    u1.nome[strcspn(u1.nome, "\n")] =0;
     //getchar();
     printf("Senha:\n");
-    fgets(senha, sizeof(senha), stdin);
-    senha[strcspn(senha, "\n")] =0;
+    fgets(u1.senha, sizeof(u1.senha), stdin);
+    u1.senha[strcspn(u1.senha, "\n")] =0;
     //getchar();
     //imprime e separa por ;
-    fprintf(arquivo, "%s;%s\n", nome, senha);
+    fprintf(arquivo, "%s;%s\n", u1.nome, u1.senha);
     fclose(arquivo);
     printf("Usuário cadastrado com sucesso.\n");
 }
 void entrar(){
     FILE *arquivo;
-    char *nomefix, *senhafix, nome[100], senha[50], linha[200];
+    struct usuario u2;
+    char *nomefix, *senhafix, linha[200];
     int flag=0;
 
     arquivo=fopen("dadoslogin.txt", "r");
@@ -39,11 +40,11 @@ void entrar(){
 
     printf("______LOGIN______\n");
     printf("Nome:\n");
-    fgets(nome, sizeof(nome), stdin);
-    nome[strcspn(nome, "\n")] =0;
+    fgets(u2.nome, sizeof(u2.nome), stdin);
+    u2.nome[strcspn(u2.nome, "\n")] =0;
     printf("Senha:\n");
-    fgets(senha, sizeof(senha), stdin);
-    senha[strcspn(senha, "\n")] =0;
+    fgets(u2.senha, sizeof(u2.senha), stdin);
+    u2.senha[strcspn(u2.senha, "\n")] =0;
     while (fgets(linha, sizeof(linha), arquivo) != NULL && flag == 0) {
         // Remove a quebra de linha
         linha[strcspn(linha, "\n")] = 0;
@@ -53,9 +54,9 @@ void entrar(){
         senhafix = strtok(NULL, ";"); // continua de onde parou o ponteiro
 
         if (nomefix != NULL && senhafix != NULL) {
-            if(strcmp(nome, nomefix) == 0){
+            if(strcmp(u2.nome, nomefix) == 0){
                 printf("Nome correto!!\n");
-                if(strcmp(senha, senhafix) == 0){
+                if(strcmp(u2.senha, senhafix) == 0){
                     printf("Senha correta!!\n");
                     flag = 1;
                 } else {
